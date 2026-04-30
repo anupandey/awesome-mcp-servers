@@ -1,0 +1,105 @@
+name: Weekly README Maintenance
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # Every Monday at 03:00 UTC
+  workflow_dispatch:      # Manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sort-by-stars:
+    name: Sort entries by GitHub stars
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Sort README entries by stars
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/sort_by_stars.py
+
+      - name: Commit if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: sort entries by GitHub stars [automated]'
+          file_pattern: README.md scripts/.stars_cache.json
+
+  mark-stale:
+    name: Mark stale and archived repos
+    runs-on: ubuntu-latest
+    needs: sort-by-stars
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main  # pick up sort-by-stars commit
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Mark stale repos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/mark_stale.py --stale-months 12
+
+      - name: Commit if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: mark stale/archived repos [automated]'
+          file_pattern: README.md scripts/.meta_cache.json
+
+  recently-added:
+    name: Update Recently Added section
+    runs-on: ubuntu-latest
+    needs: mark-stale
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0  # need full history for git log
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Update recently added section
+        run: python3 scripts/update_recently_added.py --days 30 --count 10
+
+      - name: Commit if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: update recently added section [automated]'
+          file_pattern: README.md
+
+  add-glama-badges:
+    name: Add missing Glama badges
+    runs-on: ubuntu-latest
+    needs: recently-added
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Add missing Glama score badges
+        run: python3 scripts/add_glama_badges.py
+
+      - name: Commit if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: add missing Glama score badges [automated]'
+          file_pattern: README.md

@@ -75,52 +75,75 @@ Checkout [awesome-mcp-clients](https://github.com/punkpeye/awesome-mcp-clients/)
 > [!NOTE]
 > We now have a [web-based directory](https://glama.ai/mcp/servers) that is synced with the repository.
 
-* 🔗 - [Aggregators](#aggregators)
-* 🎨 - [Art & Culture](#art-and-culture)
-* 📐 - [Architecture & Design](#architecture-and-design)
-* 📂 - [Browser Automation](#browser-automation)
-* 🧬 - [Biology Medicine and Bioinformatics](#bio)
-* ☁️ - [Cloud Platforms](#cloud-platforms)
-* 👨‍💻 - [Code Execution](#code-execution)
-* 🤖 - [Coding Agents](#coding-agents)
-* 🖥️ - [Command Line](#command-line)
-* 💬 - [Communication](#communication)
-* 👤 - [Customer Data Platforms](#customer-data-platforms)
-* 🗄️ - [Databases](#databases)
-* 📊 - [Data Platforms](#data-platforms)
-* 🚚 - [Delivery](#delivery)
-* 🛠️ - [Developer Tools](#developer-tools)
-* 🧮 - [Data Science Tools](#data-science-tools)
-* 📊 - [Data Visualization](#data-visualization)
-* 📟 - [Embedded system](#embedded-system)
-* 🎓 - [Education](#education)
-* 🛒 - [E-Commerce](#e-commerce)
-* 🌳 - [Environment & Nature](#environment-and-nature)
-* 📂 - [File Systems](#file-systems)
-* 💰 - [Finance & Fintech](#finance--fintech)
-* 🎮 - [Gaming](#gaming)
-* 🏠 - [Home Automation](#home-automation)
-* 🧠 - [Knowledge & Memory](#knowledge--memory)
-* ⚖️ - [Legal](#legal)
-* 🗺️ - [Location Services](#location-services)
-* 🎯 - [Marketing](#marketing)
-* 📊 - [Monitoring](#monitoring)
-* 🎥 - [Multimedia Process](#multimedia-process)
-* 🖥️ - [OS Automation](#os-automation)
-* 📋 - [Product Management](#product-management)
-* 🏠 - [Real Estate](#real-estate)
-* 🔬 - [Research](#research)
-* 🔎 - [Search & Data Extraction](#search)
-* 🔒 - [Security](#security)
-* 🌐 - [Social Media](#social-media)
-* 🏃 - [Sports](#sports)
-* 🎧 - [Support & Service Management](#support-and-service-management)
-* 🌎 - [Translation Services](#translation-services)
-* 🎧 - [Text-to-Speech](#text-to-speech)
-* 🚆 - [Travel & Transportation](#travel-and-transportation)
-* 🔄 - [Version Control](#version-control)
-* 🏢 - [Workplace & Productivity](#workplace-and-productivity)
-* 🛠️ - [Other Tools and Integrations](#other-tools-and-integrations)
+> [!TIP]
+> **Finding a server fast:** Press `Ctrl+F` / `Cmd+F` and search by keyword — try `"postgres"`, `"slack"`, `"github"`, `"browser"`, or any tool name.
+
+## 🚀 Quick Start Picks
+
+New to MCP? Start here. Curated picks for the most common use cases — all well-maintained and widely used.
+
+| Use case | Server | Install |
+|---|---|---|
+| **Browse the web** | [Playwright MCP](https://github.com/microsoft/playwright-mcp) | `npx @playwright/mcp@latest` |
+| **Search the web** | [Brave Search](https://github.com/modelcontextprotocol/servers-archived/tree/main/src/brave-search) | `npx -y @modelcontextprotocol/server-brave-search` |
+| **Query databases** | [MCP SQLite](https://github.com/modelcontextprotocol/servers-archived/tree/main/src/sqlite) | `uvx mcp-server-sqlite --db-path ~/db.sqlite` |
+| **Read/write files** | [Filesystem MCP](https://github.com/modelcontextprotocol/servers-archived/tree/main/src/filesystem) | `npx -y @modelcontextprotocol/server-filesystem /path` |
+| **GitHub operations** | [GitHub MCP](https://github.com/github/github-mcp-server) | `npx -y @modelcontextprotocol/server-github` |
+| **Memory / notes** | [Memory MCP](https://github.com/modelcontextprotocol/servers-archived/tree/main/src/memory) | `npx -y @modelcontextprotocol/server-memory` |
+| **Fetch URLs** | [Fetch MCP](https://github.com/zcaceres/fetch-mcp) | `npx -y mcp-fetch` |
+| **Run code** | [E2B Code Interpreter](https://github.com/e2b-dev/mcp-server) | `npx -y @e2b/mcp-server` |
+
+> Browse the full list below, or use [glama.ai/mcp/servers](https://glama.ai/mcp/servers) for search and filtering.
+
+
+* 🔗 - [Aggregators (67)](#aggregators)
+* 🎨 - [Art & Culture (43)](#art-and-culture)
+* 🚀 - [Aerospace & Astrodynamics (2)](#aerospace-and-astrodynamics)
+* 📐 - [Architecture & Design (7)](#architecture-and-design)
+* 📂 - [Browser Automation (53)](#browser-automation)
+* 🧬 - [Biology Medicine and Bioinformatics (22)](#bio)
+* ☁️ - [Cloud Platforms (72)](#cloud-platforms)
+* 👨‍💻 - [Code Execution (15)](#code-execution)
+* 🤖 - [Coding Agents (51)](#coding-agents)
+* 🖥️ - [Command Line (6)](#command-line)
+* 💬 - [Communication (80)](#communication)
+* 👤 - [Customer Data Platforms (11)](#customer-data-platforms)
+* 🗄️ - [Databases (104)](#databases)
+* 📊 - [Data Platforms (25)](#data-platforms)
+* 🚚 - [Delivery (4)](#delivery)
+* 🛠️ - [Developer Tools (322)](#developer-tools)
+* 🧮 - [Data Science Tools (29)](#data-science-tools)
+* 📉 - [Data Visualization (4)](#data-visualization)
+* 📟 - [Embedded system (10)](#embedded-system)
+* 🎓 - [Education (2)](#education)
+* 🛒 - [E-Commerce (10)](#e-commerce)
+* 🌳 - [Environment & Nature (2)](#environment-and-nature)
+* 📁 - [File Systems (25)](#file-systems)
+* 💰 - [Finance & Fintech (265)](#finance--fintech)
+* 🎮 - [Gaming (38)](#gaming)
+* 🏠 - [Home Automation (3)](#home-automation)
+* 🧠 - [Knowledge & Memory (155)](#knowledge--memory)
+* ⚖️ - [Legal (7)](#legal)
+* 🗺️ - [Location Services (30)](#location-services)
+* 🎯 - [Marketing (35)](#marketing)
+* 📡 - [Monitoring (47)](#monitoring)
+* 🎥 - [Multimedia Process (27)](#multimedia-process)
+* 🖱️ - [OS Automation (1)](#os-automation)
+* 📋 - [Product Management (5)](#product-management)
+* 🏘️ - [Real Estate (1)](#real-estate)
+* 🔬 - [Research (16)](#research)
+* 🗂️ - [RAG Platforms (3)](#RAG)
+* 🔎 - [Search & Data Extraction (139)](#search)
+* 🔒 - [Security (120)](#security)
+* 🌐 - [Social Media (24)](#social-media)
+* 🏃 - [Sports (17)](#sports)
+* 🎧 - [Support & Service Management (8)](#support-and-service-management)
+* 🌎 - [Translation Services (3)](#translation-services)
+* 🔊 - [Text-to-Speech (6)](#text-to-speech)
+* 🚆 - [Travel & Transportation (22)](#travel-and-transportation)
+* 🔄 - [Version Control (18)](#version-control)
+* 🏢 - [Workplace & Productivity (52)](#workplace-and-productivity)
+* ⚙️ - [Other Tools and Integrations (170)](#other-tools-and-integrations)
 
 ### 🔗 <a name="aggregators"></a>Aggregators
 
@@ -1076,7 +1099,7 @@ Tools and integrations that enhance the development workflow and environment man
 - [DigiCatalyst-Systems/dep-diff-mcp](https://github.com/DigiCatalyst-Systems/dep-diff-mcp) [![DigiCatalyst-Systems/dep-diff-mcp MCP server](https://glama.ai/mcp/servers/DigiCatalyst-Systems/dep-diff-mcp/badges/score.svg)](https://glama.ai/mcp/servers/DigiCatalyst-Systems/dep-diff-mcp) 📇 🏠 🍎 🪟 🐧 - Translates a lockfile diff (npm, PyPI) into a human-readable upgrade plan. Point it at a Dependabot PR and get back semver classification, breaking changes from GitHub release notes, CVEs fixed in range, migration links, and a per-package recommendation. Bulk tool ranks up to 50 changes by risk (security > caution > review > likely-safe > safe). Install via `npx -y @digicatalyst/dep-diff-mcp`.
 - [hikmahtech/drwhome](https://github.com/hikmahtech/drwhome) [![hikmahtech/drwhome MCP server](https://glama.ai/mcp/servers/hikmahtech/drwhome/badges/score.svg)](https://glama.ai/mcp/servers/hikmahtech/drwhome) 📇 ☁️ – Remote MCP server at `https://drwho.me/mcp/mcp` with 10 developer utilities: base64 encode/decode, JWT decode (no verify), DNS lookup via Cloudflare DoH, UUID v4/v7, URL encode/decode, JSON format, User-Agent parse, IP lookup via ipinfo. Open access over streamable HTTP — point Claude Desktop at the URL.
 
-### 🔒 <a name="delivery"></a>Delivery
+### 🚚 <a name="delivery"></a>Delivery
 
 - [jordandalton/doordash-mcp-server](https://github.com/JordanDalton/DoorDash-MCP-Server) 🐍 – DoorDash Delivery (Unofficial)
 - [aarsiv-groups/shipi-mcp-server](https://github.com/aarsiv-groups/shipi-mcp-server) 📇 ☁️ - Shipi MCP server to create shipments, track packages, and compare rates with 18 tools for various carriers. Supports [remote MCP](https://mcp.myshipi.com/api/mcp).
@@ -1117,7 +1140,7 @@ Integrations and tools designed to simplify data exploration, analysis and enhan
 - [subelsky/bundler_mcp](https://github.com/subelsky/bundler_mcp) 💎 🏠 - Enables agents to query local information about dependencies in a Ruby project's `Gemfile`.
 - [zcaceres/markdownify-mcp](https://github.com/zcaceres/markdownify-mcp) 📇 🏠 - An MCP server to convert almost any file or web content into Markdown
 
-### 📊 <a name="data-visualization"></a>Data Visualization
+### 📉 <a name="data-visualization"></a>Data Visualization
 
 Interactive charts, dashboards, and visual data tools rendered inside AI conversations.
 
@@ -1173,7 +1196,7 @@ Provides access to environmental data and nature-related tools, services and inf
 - [aliafsahnoudeh/wildfire-mcp-server](https://github.com/aliafsahnoudeh/wildfire-mcp-server) 🐍 ☁️ 🍎 🪟 🐧 - MCP server for detecting, monitoring, and analyzing potential wildfires globally using multiple data sources including NASA FIRMS, OpenWeatherMap, and Google Earth Engine.
 - [nalediym/touch-grass](https://github.com/nalediym/touch-grass) [![nalediym/touch-grass MCP server](https://glama.ai/mcp/servers/nalediym/touch-grass/badges/score.svg)](https://glama.ai/mcp/servers/nalediym/touch-grass) 📇 🏠 🍎 🪟 🐧 - Claude Code plugin and MCP server that nudges you to take outdoor breaks based on local weather, sunset timing, and session streaks. Tools: `check_grass_conditions`, `suggest_activity`, `log_touch_grass`, `get_stats`. Fully local, no API keys, no cloud storage.
 
-### 📂 <a name="file-systems"></a>File Systems
+### 📁 <a name="file-systems"></a>File Systems
 
 Provides direct access to local file systems with configurable permissions. Enables AI models to read, write, and manage files within specified directories.
 
@@ -1771,7 +1794,7 @@ Tools for creating and editing marketing content, working with web meta data, pr
 - [tomba-io/tomba-mcp-server](https://github.com/tomba-io/tomba-mcp-server) 📇 ☁️ - Email discovery, verification, and enrichment tools. Find email addresses, verify deliverability, enrich contact data, discover authors and LinkedIn profiles, validate phone numbers, and analyze technology stacks.
 - [ZLeventer/salesforce-marketing-mcp](https://github.com/ZLeventer/salesforce-marketing-mcp) [![salesforce-marketing-mcp MCP server](https://glama.ai/mcp/servers/ZLeventer/salesforce-marketing-mcp/badges/score.svg)](https://glama.ai/mcp/servers/ZLeventer/salesforce-marketing-mcp) 📇 ☁️ 🏠 🍎 🪟 🐧 - Salesforce MCP server built for marketing and revenue ops teams. 47 tools for leads, contacts, accounts, campaigns, campaign members, tasks, and 17 reporting tools including campaign ROI, lead-source attribution, pipeline-by-campaign, multi-touch campaign influence, MQL trend, forecast summary, and the native SFDC Reports API.
 
-### 📊 <a name="monitoring"></a>Monitoring
+### 📡 <a name="monitoring"></a>Monitoring
 
 Access and analyze application monitoring data. Enables AI models to review error reports and performance metrics.
 
@@ -1855,7 +1878,7 @@ Provides the ability to handle multimedia, such as audio and video editing, play
 - [TopazLabs/topaz-mcp](https://github.com/TopazLabs/topaz-mcp) 📇 ☁️ 🍎 🪟 🐧 - AI image enhancement (upscaling, denoising, sharpening) via Topaz Labs API. Supports 8 models including Standard V2, Wonder 2, Bloom, and Recover 3.
 - [verIdyia/autoeq-mcp](https://github.com/verIdyia/autoeq-mcp) [![autoeq-mcp MCP server](https://glama.ai/mcp/servers/verIdyia/autoeq-mcp/badges/score.svg)](https://glama.ai/mcp/servers/verIdyia/autoeq-mcp) 🐍 🏠 🍎 🪟 🐧 - Headphone/IEM equalization database with 8,800+ models from AutoEQ. Search by name or sound signature, get parametric EQ settings, compare headphones band-by-band, and browse Harman preference score rankings. Includes automatic sound signature classification (Neutral, Warm, Bright, Dark, V-shaped, etc.).
 
-### 🖥️ <a name="os-automation"></a>OS Automation
+### 🖱️ <a name="os-automation"></a>OS Automation
 
 Servers for controlling the desktop operating system: screenshots, window management, mouse/keyboard input injection, and system-level automation.
 
@@ -1871,7 +1894,7 @@ Tools for product planning, customer feedback analysis, and prioritization.
 - [TylerIlunga/procore-mcp-server](https://github.com/TylerIlunga/procore-mcp-server) 📇 ☁️ 🍎 🪟 🐧 - MCP server exposing the full Procore REST API (2,636 endpoints) for construction project management. Includes 7 discovery and execution tools covering projects, RFIs, submittals, daily logs, budgets, and more. Single-user OAuth with auto-refresh.
 - [spranab/saga-mcp](https://github.com/spranab/saga-mcp) [![saga-mcp MCP server](https://glama.ai/mcp/servers/@spranab/saga-mcp/badges/score.svg)](https://glama.ai/mcp/servers/@spranab/saga-mcp) 📇 🏠 🍎 🪟 🐧 - A Jira-like project tracker for AI agents with full hierarchy (Projects > Epics > Tasks > Subtasks), task dependencies with auto-block/unblock, threaded comments, reusable templates, activity logging, and a natural language dashboard. SQLite-backed, 31 tools.
 
-### 🏠 <a name="real-estate"></a>Real Estate
+### 🏘️ <a name="real-estate"></a>Real Estate
 
 MCP servers for real estate CRM, property management, and agent workflows.
 
@@ -2239,7 +2262,7 @@ Translation tools and services to enable AI assistants to translate content betw
 - [shuji-bonji/xcomet-mcp-server](https://github.com/shuji-bonji/xcomet-mcp-server) 📇 🏠 - Translation quality evaluation using xCOMET models. Provides quality scoring (0-1), error detection with severity levels (minor/major/critical), and optimized batch processing with 25x speedup.
 - [translated/lara-mcp](https://github.com/translated/lara-mcp) 🎖️ 📇 ☁️ - MCP Server for Lara Translate API, enabling powerful translation capabilities with support for language detection and context-aware translations.
 
-### 🎧 <a name="text-to-speech"></a>Text-to-Speech
+### 🔊 <a name="text-to-speech"></a>Text-to-Speech
 
 Tools for converting text-to-speech and vice-versa
 
@@ -2355,7 +2378,7 @@ Interact with Git repositories and version control platforms. Enables repository
 - [yoryocoruxo-ai/rendoc-mcp-server](https://github.com/yoryocoruxo-ai/rendoc-mcp-server) [![yoryocoruxo-ai/rendoc-mcp-server MCP server](https://glama.ai/mcp/servers/@yoryocoruxo-ai/rendoc-mcp-server/badges/score.svg)](https://glama.ai/mcp/servers/@yoryocoruxo-ai/rendoc-mcp-server) 📇 ☁️ 🍎 🪟 🐧 - Generate professional PDF documents (invoices, contracts, reports, certificates) from reusable templates or inline HTML/Handlebars markup via the [rendoc](https://rendoc.dev) API. 7 tools for document generation, template management, and usage tracking.
 - [yuvalsuede/claudia](https://github.com/yuvalsuede/claudia) 📇 🏠 🍎 🪟 🐧 - AI-native task management system for Claude agents. Hierarchical tasks, dependencies, sprints, acceptance criteria, multi-agent coordination, and MCP server integration.
 
-### 🛠️ <a name="other-tools-and-integrations"></a>Other Tools and Integrations
+### ⚙️ <a name="other-tools-and-integrations"></a>Other Tools and Integrations
 
 - [2niuhe/plantuml_web](https://github.com/2niuhe/plantuml_web) 🐍 🏠 ☁️ 🍎 🪟 🐧 - A web-based PlantUML frontend with MCP server integration, enable plantuml image generation and plantuml syntax validation.
 - [2niuhe/qrcode_mcp](https://github.com/2niuhe/qrcode_mcp) 🐍 🏠 🍎 🪟 🐧 - A QR code generation MCP server that converts any text (including Chinese characters) to QR codes with customizable colors and base64 encoding output.
