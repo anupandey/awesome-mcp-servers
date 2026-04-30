@@ -103,3 +103,32 @@ jobs:
         with:
           commit_message: 'chore: add missing Glama score badges [automated]'
           file_pattern: README.md
+
+  add-badges-and-tags:
+    name: Add shields badges and entry tags
+    runs-on: ubuntu-latest
+    needs: add-glama-badges
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Add shields.io stars and last-commit badges
+        run: python3 scripts/add_shields_badges.py
+
+      - name: Tag community favorites (>=500 stars)
+        run: python3 scripts/mark_favorites.py
+
+      - name: Tag API-key-required entries
+        run: python3 scripts/add_pricing_tags.py
+
+      - name: Commit if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: refresh shields badges and entry tags [automated]'
+          file_pattern: README.md
