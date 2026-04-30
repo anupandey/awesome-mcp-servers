@@ -10,7 +10,16 @@ Set GITHUB_TOKEN env var for 5000 req/hr (vs 60 unauthenticated).
 """
 
 import os, re, sys, json, time, argparse, urllib.request, urllib.error
+from pathlib import Path
 from readme_parser import parse_readme, render_readme
+
+# Load .env from repo root if present
+_env = Path(__file__).parent.parent / '.env'
+if _env.exists():
+    for _line in _env.read_text().splitlines():
+        if '=' in _line and not _line.startswith('#'):
+            _k, _v = _line.split('=', 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
 
 README = 'README.md'
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
