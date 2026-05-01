@@ -1,0 +1,12 @@
+{
+  "_comment": "Curated one-line install commands for popular 🌟 entries. Add more via PR.",
+  "microsoft/playwright-mcp": "npx @playwright/mcp@latest",
+  "upstash/context7": "npx -y @upstash/context7-mcp@latest",
+  "ahujasid/blender-mcp": "uvx blender-mcp",
+  "GLips/Figma-Context-MCP": "npx figma-developer-mcp",
+  "e2b-dev/mcp-server": "npx -y @e2b/mcp-server",
+  "zcaceres/fetch-mcp": "npx -y mcp-fetch",
+  "eyaltoledano/claude-task-master": "npm install -g task-master-ai",
+  "idosal/git-mcp": "npx git-mcp",
+  "wonderwhy-er/DesktopCommanderMCP": "npx @wonderwhy-er/desktop-commander"
+}

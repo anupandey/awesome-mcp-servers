@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Tag entries with >= N stars as community favorites (🌟).
+Tag entries with >= N stars as community favorites (🌟 Xk).
 Re-entrant: strips and re-inserts tag on every run.
 Uses scripts/.stars_cache.json — run sort_by_stars.py first.
 
@@ -14,8 +14,16 @@ from readme_parser import parse_readme, render_readme, find_description_separato
 
 README = 'README.md'
 CACHE_FILE = 'scripts/.stars_cache.json'
-TAG = '🌟'
-TAG_STRIP_RE = re.compile(r' 🌟')
+TAG_EMOJI = '🌟'
+TAG_STRIP_RE = re.compile(r' 🌟(?:\s+\d[\d\.]*k?)?')
+
+
+def fmt_stars(n: int) -> str:
+    if n >= 10000:
+        return f'{round(n / 1000)}k'
+    if n >= 1000:
+        return f'{n / 1000:.1f}k'
+    return str(n)
 
 
 def main():
@@ -53,11 +61,12 @@ def main():
                     removed += 1
                 continue
 
+            tag = f'{TAG_EMOJI} {fmt_stars(stars)}'
             sep = find_description_separator(cleaned)
             if sep == -1:
-                new_raw = cleaned + ' ' + TAG
+                new_raw = cleaned + ' ' + tag
             else:
-                new_raw = cleaned[:sep] + ' ' + TAG + cleaned[sep:]
+                new_raw = cleaned[:sep] + ' ' + tag + cleaned[sep:]
 
             if new_raw != entry.raw:
                 entry.raw = new_raw
