@@ -10,38 +10,12 @@ Usage:
 
 import json, re, sys, argparse
 from pathlib import Path
-from readme_parser import parse_readme, render_readme
+from readme_parser import parse_readme, render_readme, find_description_separator
 
 README = 'README.md'
 CACHE_FILE = 'scripts/.stars_cache.json'
 TAG = '🌟'
 TAG_STRIP_RE = re.compile(r' 🌟')
-
-
-def find_separator(raw):
-    """
-    Find position of description separator ' - ' using bracket-depth tracking.
-    Ignores ' - ' inside [...] or (...) — handles links in descriptions.
-    Returns -1 if not found.
-    """
-    sq = pa = 0
-    link_seen = False
-    for i, c in enumerate(raw):
-        if c == '[':
-            sq += 1
-        elif c == ']':
-            if sq > 0:
-                sq -= 1
-        elif c == '(':
-            pa += 1
-        elif c == ')':
-            if pa > 0:
-                pa -= 1
-            if pa == 0 and sq == 0:
-                link_seen = True
-        if link_seen and sq == 0 and pa == 0 and raw[i:i+3] == ' - ':
-            return i
-    return -1
 
 
 def main():
@@ -61,7 +35,7 @@ def main():
         content = f.read()
 
     pre, sections = parse_readme(content)
-    marked = 0
+    marked = removed = 0
 
     for sec in sections:
         for entry in sec.entries:
@@ -76,9 +50,10 @@ def main():
                 if cleaned != entry.raw:
                     entry.raw = cleaned
                     sec.sync_entry(entry)
+                    removed += 1
                 continue
 
-            sep = find_separator(cleaned)
+            sep = find_description_separator(cleaned)
             if sep == -1:
                 new_raw = cleaned + ' ' + TAG
             else:
@@ -89,8 +64,8 @@ def main():
                 sec.sync_entry(entry)
                 marked += 1
 
-    print(f'Marked {marked} community favorites (>={args.threshold} stars).')
-    if not args.dry_run and marked > 0:
+    print(f'Marked {marked} community favorites (>={args.threshold} stars), removed {removed}.')
+    if not args.dry_run and (marked + removed) > 0:
         with open(README, 'w') as f:
             f.write(render_readme(pre, sections))
         print('Written.')

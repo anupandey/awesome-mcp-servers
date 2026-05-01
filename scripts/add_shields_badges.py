@@ -8,7 +8,7 @@ Usage:
 """
 
 import re, argparse
-from readme_parser import parse_readme, render_readme
+from readme_parser import parse_readme, render_readme, find_description_separator
 
 README = 'README.md'
 
@@ -26,34 +26,12 @@ def strip_shields(raw):
     return SHIELDS_BADGE_RE.sub('', raw)
 
 
-def _find_separator(raw):
-    """Bracket-depth separator finder — returns position of ' - ' or -1."""
-    sq = pa = 0
-    link_seen = False
-    for i, c in enumerate(raw):
-        if c == '[':
-            sq += 1
-        elif c == ']':
-            if sq > 0:
-                sq -= 1
-        elif c == '(':
-            pa += 1
-        elif c == ')':
-            if pa > 0:
-                pa -= 1
-            if pa == 0 and sq == 0:
-                link_seen = True
-        if link_seen and sq == 0 and pa == 0 and raw[i:i+3] == ' - ':
-            return i
-    return -1
-
-
 def find_insert_pos(raw):
     """
     Insert shields badges after the last Glama link that appears BEFORE ' - '.
     Falls back to first GitHub link (entry link) if no qualifying Glama link.
     """
-    sep = _find_separator(raw)
+    sep = find_description_separator(raw)
     # Last Glama link that is in the header area (before separator)
     last_glama_end = 0
     for m in GLAMA_LINK_RE.finditer(raw):

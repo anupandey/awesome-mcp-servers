@@ -102,6 +102,32 @@ class Section:
         self._entries_built = False  # invalidate cache
 
 
+def find_description_separator(raw: str) -> int:
+    """
+    Find position of ' - ' entry separator using bracket-depth tracking.
+    Ignores ' - ' inside [...] or (...), so description links don't
+    mislead the search. Returns -1 if not found.
+    """
+    sq = pa = 0
+    link_seen = False
+    for i, c in enumerate(raw):
+        if c == '[':
+            sq += 1
+        elif c == ']':
+            if sq > 0:
+                sq -= 1
+        elif c == '(':
+            pa += 1
+        elif c == ')':
+            if pa > 0:
+                pa -= 1
+            if pa == 0 and sq == 0:
+                link_seen = True
+        if link_seen and sq == 0 and pa == 0 and raw[i:i+3] == ' - ':
+            return i
+    return -1
+
+
 def _parse_github_url(line: str):
     m = GITHUB_RE.search(line)
     if m:
