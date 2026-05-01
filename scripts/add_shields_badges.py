@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Add shields.io GitHub stars and last-commit badges to each entry.
-Idempotent: skips entries that already have shields badges.
+Re-entrant: strips and re-inserts on every run so position is always correct.
 
 Usage:
     python3 scripts/add_shields_badges.py [--dry-run]
@@ -11,8 +11,62 @@ import re, argparse
 from readme_parser import parse_readme, render_readme
 
 README = 'README.md'
-SHIELDS_RE = re.compile(r'img\.shields\.io/github/stars/')
-LAST_LINK_RE = re.compile(r'\]\([^)]+\)')
+
+# Matches one shields badge with its leading space
+SHIELDS_BADGE_RE = re.compile(
+    r' \[!\[(?:Stars|Last Commit)\]'
+    r'\(https://img\.shields\.io/github/[^)]+\)\]'
+    r'\(https://github\.com/[^)]+\)'
+)
+GLAMA_LINK_RE = re.compile(r'\]\(https://glama\.ai/[^\s)]+\)')
+GITHUB_LINK_RE = re.compile(r'\]\(https://github\.com/[^\s)]+\)')
+
+
+def strip_shields(raw):
+    return SHIELDS_BADGE_RE.sub('', raw)
+
+
+def _find_separator(raw):
+    """Bracket-depth separator finder — returns position of ' - ' or -1."""
+    sq = pa = 0
+    link_seen = False
+    for i, c in enumerate(raw):
+        if c == '[':
+            sq += 1
+        elif c == ']':
+            if sq > 0:
+                sq -= 1
+        elif c == '(':
+            pa += 1
+        elif c == ')':
+            if pa > 0:
+                pa -= 1
+            if pa == 0 and sq == 0:
+                link_seen = True
+        if link_seen and sq == 0 and pa == 0 and raw[i:i+3] == ' - ':
+            return i
+    return -1
+
+
+def find_insert_pos(raw):
+    """
+    Insert shields badges after the last Glama link that appears BEFORE ' - '.
+    Falls back to first GitHub link (entry link) if no qualifying Glama link.
+    """
+    sep = _find_separator(raw)
+    # Last Glama link that is in the header area (before separator)
+    last_glama_end = 0
+    for m in GLAMA_LINK_RE.finditer(raw):
+        if sep != -1 and m.end() > sep:
+            break
+        last_glama_end = m.end()
+    if last_glama_end:
+        return last_glama_end
+    # First GitHub link (the entry link itself)
+    m = GITHUB_LINK_RE.search(raw)
+    if m and (sep == -1 or m.end() <= sep):
+        return m.end()
+    return 0
 
 
 def make_badges(owner, repo):
@@ -24,15 +78,6 @@ def make_badges(owner, repo):
     return stars + ' ' + commit
 
 
-def insert_after_last_link(raw, text):
-    last_end = 0
-    for m in LAST_LINK_RE.finditer(raw):
-        last_end = m.end()
-    if not last_end:
-        return raw
-    return raw[:last_end] + ' ' + text + raw[last_end:]
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dry-run', action='store_true')
@@ -42,22 +87,24 @@ def main():
         content = f.read()
 
     pre, sections = parse_readme(content)
-    added = 0
+    updated = 0
 
     for sec in sections:
         for entry in sec.entries:
             if not entry.owner or not entry.repo:
                 continue
-            if SHIELDS_RE.search(entry.raw):
+            cleaned = strip_shields(entry.raw)
+            pos = find_insert_pos(cleaned)
+            if not pos:
                 continue
-            new_raw = insert_after_last_link(entry.raw, make_badges(entry.owner, entry.repo))
+            new_raw = cleaned[:pos] + ' ' + make_badges(entry.owner, entry.repo) + cleaned[pos:]
             if new_raw != entry.raw:
                 entry.raw = new_raw
                 sec.sync_entry(entry)
-                added += 1
+                updated += 1
 
-    print(f'Added shields badges to {added} entries.')
-    if not args.dry_run and added > 0:
+    print(f'Updated {updated} entries.')
+    if not args.dry_run and updated > 0:
         with open(README, 'w') as f:
             f.write(render_readme(pre, sections))
         print('Written.')

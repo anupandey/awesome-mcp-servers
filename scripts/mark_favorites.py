@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Tag entries with >= N stars as community favorites (🌟).
+Re-entrant: strips and re-inserts tag on every run.
 Uses scripts/.stars_cache.json — run sort_by_stars.py first.
-Idempotent: skips entries already tagged.
 
 Usage:
     python3 scripts/mark_favorites.py [--dry-run] [--threshold N]
@@ -15,18 +15,33 @@ from readme_parser import parse_readme, render_readme
 README = 'README.md'
 CACHE_FILE = 'scripts/.stars_cache.json'
 TAG = '🌟'
-TAG_RE = re.compile(r'🌟')
-LAST_LINK_RE = re.compile(r'\]\([^)]+\)')
+TAG_STRIP_RE = re.compile(r' 🌟')
 
 
-def insert_tag_before_dash(raw, tag):
-    last_end = 0
-    for m in LAST_LINK_RE.finditer(raw):
-        last_end = m.end()
-    idx = raw.find(' - ', last_end)
-    if idx == -1:
-        return raw + ' ' + tag
-    return raw[:idx] + ' ' + tag + raw[idx:]
+def find_separator(raw):
+    """
+    Find position of description separator ' - ' using bracket-depth tracking.
+    Ignores ' - ' inside [...] or (...) — handles links in descriptions.
+    Returns -1 if not found.
+    """
+    sq = pa = 0
+    link_seen = False
+    for i, c in enumerate(raw):
+        if c == '[':
+            sq += 1
+        elif c == ']':
+            if sq > 0:
+                sq -= 1
+        elif c == '(':
+            pa += 1
+        elif c == ')':
+            if pa > 0:
+                pa -= 1
+            if pa == 0 and sq == 0:
+                link_seen = True
+        if link_seen and sq == 0 and pa == 0 and raw[i:i+3] == ' - ':
+            return i
+    return -1
 
 
 def main():
@@ -53,13 +68,26 @@ def main():
             if not entry.owner or not entry.repo:
                 continue
             stars = cache.get(f'{entry.owner}/{entry.repo}', 0)
-            if not isinstance(stars, int) or stars < args.threshold:
+            qualifies = isinstance(stars, int) and stars >= args.threshold
+
+            cleaned = TAG_STRIP_RE.sub('', entry.raw)
+
+            if not qualifies:
+                if cleaned != entry.raw:
+                    entry.raw = cleaned
+                    sec.sync_entry(entry)
                 continue
-            if TAG_RE.search(entry.raw):
-                continue
-            entry.raw = insert_tag_before_dash(entry.raw, TAG)
-            sec.sync_entry(entry)
-            marked += 1
+
+            sep = find_separator(cleaned)
+            if sep == -1:
+                new_raw = cleaned + ' ' + TAG
+            else:
+                new_raw = cleaned[:sep] + ' ' + TAG + cleaned[sep:]
+
+            if new_raw != entry.raw:
+                entry.raw = new_raw
+                sec.sync_entry(entry)
+                marked += 1
 
     print(f'Marked {marked} community favorites (>={args.threshold} stars).')
     if not args.dry_run and marked > 0:
